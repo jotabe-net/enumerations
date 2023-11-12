@@ -1,0 +1,17 @@
+﻿namespace JotaBe.Enumerations.Tests
+{
+    public class TemperatureUnit : EnumerationClass<TemperatureUnit, char>
+    {
+        public TemperatureUnit(string name, char value) : base(name, value)
+        {
+        }
+
+        // Define elements as readonly static
+
+        public readonly static TemperatureUnit Celsius = new TemperatureUnit(nameof(Celsius), 'C');
+        public readonly static TemperatureUnit Kelvin = new TemperatureUnit(nameof(Kelvin), 'K');
+        public readonly static TemperatureUnit Fahrenheit = new TemperatureUnit(nameof(Fahrenheit), 'F');
+    }
+
+
+}

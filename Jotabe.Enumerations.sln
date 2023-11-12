@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E210A43D-6B58-41D2-8F9F-4A37C57EE45C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JotaBe.Enumerations", "Src\JotaBe.Enumerations\JotaBe.Enumerations.csproj", "{31E0EBCD-2880-4C7A-AD57-3F17D142F12D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JotaBe.Enumerations.Tests", "Tests\JotaBe.Enumerations.Tests\JotaBe.Enumerations.Tests.csproj", "{8F7BC0DC-BB81-434D-A2CD-94D9757D599F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{31E0EBCD-2880-4C7A-AD57-3F17D142F12D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31E0EBCD-2880-4C7A-AD57-3F17D142F12D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31E0EBCD-2880-4C7A-AD57-3F17D142F12D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31E0EBCD-2880-4C7A-AD57-3F17D142F12D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F7BC0DC-BB81-434D-A2CD-94D9757D599F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F7BC0DC-BB81-434D-A2CD-94D9757D599F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F7BC0DC-BB81-434D-A2CD-94D9757D599F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F7BC0DC-BB81-434D-A2CD-94D9757D599F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A136F5E-BEB3-4FD5-B224-DBAF6F0B3852}
+	EndGlobalSection
+EndGlobal
