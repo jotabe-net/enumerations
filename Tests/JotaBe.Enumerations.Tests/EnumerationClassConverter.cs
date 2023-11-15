@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using JotaBe.TypeExtensions;
 
 namespace JotaBe.Enumerations.Tests
 {
@@ -13,6 +14,7 @@ namespace JotaBe.Enumerations.Tests
         // TODO: the factory should not have parameters beacuse can't be used in jsonserializer attribute
         // TODO: so it's possible to create a base class, and derive whole objec + value + name, by default value??
 
+        // As it's used for generic classes, must use the factory pattern explained here
         // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/converters-how-to?pivots=dotnet-7-0
 
         public override bool CanConvert(Type typeToConvert)
@@ -39,6 +41,14 @@ namespace JotaBe.Enumerations.Tests
                 )!;
 
             return converter;
+        }
+
+        private enum EnumerationMode
+        {
+            Value,
+            Key,
+            AllValues,
+            // RespectEnumMemberStringConverter
         }
 
         private class InternalEnumerationClassConverter<TEnumeration, TValue>
