@@ -10,14 +10,14 @@ namespace JotaBe.TypeExtensions.Tests
         [TestMethod]
         public void CheckDirectlyDerived_FromGenericUnspecifiedTypes()
         {
-            typeof(DerivedFromGeneric)
+            typeof(DerivedFromGenericIntString)
                 .IsDerivedFrom(typeof(GenericBase<,>)).Should().BeTrue();
         }
 
         [TestMethod]
         public void CheckSecondLevelDerived_FromGenericUnspecifiedTypes()
         {
-            typeof(DerivedFromDerivedFromGeneric)
+            typeof(DerivedFromDerivedFromGenericIntString)
                 .IsDerivedFrom(typeof(GenericBase<,>)).Should().BeTrue();
         }
 
@@ -45,16 +45,16 @@ namespace JotaBe.TypeExtensions.Tests
         // Derived from specified types generic
 
         [TestMethod]
-        public void CheckDirectlyDerived_FromGenericSspecifiedTypes()
+        public void CheckDirectlyDerived_FromGenericSpecifiedTypes()
         {
-            typeof(DerivedFromGeneric)
+            typeof(DerivedFromGenericIntString)
                 .IsDerivedFrom(typeof(GenericBase<int,string>)).Should().BeTrue();
         }
 
         [TestMethod]
         public void CheckSecondLevelDerived_FromGenericSpecifiedTypes()
         {
-            typeof(DerivedFromDerivedFromGeneric)
+            typeof(DerivedFromDerivedFromGenericIntString)
                 .IsDerivedFrom(typeof(GenericBase<int,string>)).Should().BeTrue();
         }
 
@@ -75,39 +75,17 @@ namespace JotaBe.TypeExtensions.Tests
         [TestMethod]
         public void CheckDirectlyDerived_FromGenericSpecified_DifferentTypes()
         {
-            typeof(DerivedFromGeneric)
+            typeof(DerivedFromGenericIntString)
                 .IsDerivedFrom(typeof(GenericBase<int, char>)).Should().BeFalse();
         }
 
         [TestMethod]
         public void CheckSecondLevelDerived_FromGenericSpecified_DifferentTypes()
         {
-            typeof(DerivedFromDerivedFromGeneric)
+            typeof(DerivedFromDerivedFromGenericIntString)
                 .IsDerivedFrom(typeof(GenericBase<int, char>)).Should().BeFalse();
         }
 
     }
-
-    public class GenericBase<TKey, TValue>
-        where TKey : notnull
-    {
-        public GenericBase()
-        {
-            TheDictionary = new Dictionary<TKey, TValue>();
-        }
-
-        public Dictionary<TKey, TValue> TheDictionary { get; set; }
-    }
-
-    public class DerivedFromGeneric : GenericBase<int, string>
-    {
-
-    }
-
-    public class DerivedFromDerivedFromGeneric : DerivedFromGeneric
-    {
-
-    }
-
 
 }
