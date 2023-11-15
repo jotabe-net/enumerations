@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
 namespace JotaBe.Enumerations
 {
     // TODO: if order may be of importance, either make the value IComparable, or allow an int for defining the order
+    // TODO: document all 
 
     /// <summary>
-    /// Can be used as a replacement for C# enum, to allow including 
+    /// Can be used as a replacement for C# enum, to allow including
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay}")]
     public abstract class EnumerationClass<TEnumeration,TValue>
         where TEnumeration : EnumerationClass<TEnumeration,TValue>
         //where TValue : IEquatable<TValue>
@@ -30,7 +33,6 @@ namespace JotaBe.Enumerations
             Value = value;
         }
 
-
         private static List<TEnumeration> Elements
         {
             get 
@@ -44,15 +46,21 @@ namespace JotaBe.Enumerations
         private static List<TEnumeration> _cachedElements;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
+        /// <summary>
+        /// Initializes the list of elements with double lock pattern, to support concurrency
+        /// </summary>
         static void EnsureElements()
         {
             if (_cachedElements == null)
             {
                 lock (_cachedElementsLock)
                 {
-                    var enumerationType = typeof(TEnumeration);
-                    var fields = enumerationType.GetFields(BindingFlags.Public | BindingFlags.Static); // | BindingFlags.DeclaredOnly);
-                    _cachedElements = fields.Select(field => field.GetValue(null)).Cast<TEnumeration>().ToList()!;
+                    if (_cachedElements == null)
+                    {
+                        var enumerationType = typeof(TEnumeration);
+                        var fields = enumerationType.GetFields(BindingFlags.Public | BindingFlags.Static); // | BindingFlags.DeclaredOnly);
+                        _cachedElements = fields.Select(field => field.GetValue(null)).Cast<TEnumeration>().ToList()!;
+                    }
                 }
             }
         }
@@ -60,6 +68,19 @@ namespace JotaBe.Enumerations
         public bool Equals(TEnumeration? other)
         {
             return other != null && other.Value!.Equals(Value);
+        }
+
+        public static TEnumeration FromValue(TValue value)
+        {
+            var element = Elements.First(e => e.Value!.Equals(value));
+            return element;
+        }
+
+        // TODO: allow ignore case??
+        public static TEnumeration FromName(string name)
+        {
+            var element = Elements.First(e => e.Name == name);
+            return element;
         }
 
         public static TEnumeration[] GetValues()
@@ -176,5 +197,7 @@ namespace JotaBe.Enumerations
             }
             return exists;
         }
+
+        private string DebuggerDisplay => $"{Value}: {Name}";
     }
 }
