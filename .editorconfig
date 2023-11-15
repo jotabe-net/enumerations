@@ -48,7 +48,7 @@ csharp_style_var_for_built_in_types = false:silent
 csharp_style_var_when_type_is_apparent = false:silent
 csharp_style_var_elsewhere = false:silent
 vsspell_section_id = b648a4221b564a46ad05b262c0adcc2e
-vsspell_ignored_words_b648a4221b564a46ad05b262c0adcc2e = Dont|Jota
+vsspell_ignored_words_b648a4221b564a46ad05b262c0adcc2e = Dont|Jota|Json|Serializer
 
 [*.{cs,vb}]
 #### Naming styles ####
