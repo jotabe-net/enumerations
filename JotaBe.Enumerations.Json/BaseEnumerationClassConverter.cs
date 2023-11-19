@@ -1,10 +1,10 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Xml.Linq;
 using JotaBe.TypeExtensions;
 
-namespace JotaBe.Enumerations.Tests
+namespace JotaBe.Enumerations.Json
 {
     // TODO: test cases with attribute converter attribute ion property
 
@@ -122,7 +122,7 @@ namespace JotaBe.Enumerations.Tests
                 bool nameFound = false;
                 string? name = null;
                 bool valueFound = false;
-                TValue? value = default;
+                TValue value = default;
 
                 while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
                 {
@@ -235,10 +235,10 @@ namespace JotaBe.Enumerations.Tests
             /// <exception cref="JsonException"></exception>
             protected EnumerationClass<TEnumeration, TValue>? ReadFromValue(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
-                TValue? value = default(TValue);
+                TValue value = default(TValue);
                 try
                 {
-                    value = (TValue?)JsonSerializer.Deserialize(ref reader, typeof(TValue), options);
+                    value = (TValue)JsonSerializer.Deserialize(ref reader, typeof(TValue), options);
                 }
                 catch (Exception)
                 {

@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using JotaBe.Enumerations.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text.Json;
 

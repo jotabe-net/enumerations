@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\JotaBe.TypeExtensions\JotaBe.TypeExtensions.csproj" />
+    <ProjectReference Include="..\..\JotaBe.Enumerations.Json\JotaBe.Enumerations.Json.csproj" />
     <ProjectReference Include="..\..\Src\JotaBe.Enumerations\JotaBe.Enumerations.csproj" />
   </ItemGroup>
 

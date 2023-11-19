@@ -1,4 +1,4 @@
-﻿namespace JotaBe.Enumerations.Tests
+﻿namespace JotaBe.Enumerations.Json
 {
     public class EnumerationClassAsObjectConverter : BaseEnumerationClassConverter
     {
