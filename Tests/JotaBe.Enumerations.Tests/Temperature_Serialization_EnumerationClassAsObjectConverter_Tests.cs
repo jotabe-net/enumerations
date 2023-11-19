@@ -8,7 +8,7 @@ namespace JotaBe.Enumerations.Tests
     public class Temperature_Serialization_EnumerationClassAsObjectConverter_Tests
     {
         [TestMethod]
-        public void JsonSerializer_Serialize_With_EnumerationClassAsObjectConverter_NoNamingPolicy()
+        public void JsonSerializer_Serialize_NoNamingPolicy()
         {
             var temperature = new Temperature(27.3, TemperatureUnit.Celsius);
 
@@ -30,7 +30,7 @@ namespace JotaBe.Enumerations.Tests
         }
 
         [TestMethod]
-        public void JsonSerializer_Serialize_With_EnumerationClassAsObjectConverter_CamelCaseNamingPolicy()
+        public void JsonSerializer_Serialize_CamelCaseNamingPolicy()
         {
             var temperature = new Temperature(27.3, TemperatureUnit.Celsius);
 
@@ -53,7 +53,7 @@ namespace JotaBe.Enumerations.Tests
         }
 
         [TestMethod]
-        public void JsonSerializer_Deserialize_With_EnumerationClassAsObjectConverter_NoNamingPolicy()
+        public void JsonSerializer_Deserialize_NoNamingPolicy()
         {
             var json = """
                 {
@@ -75,7 +75,7 @@ namespace JotaBe.Enumerations.Tests
         }
 
         [TestMethod]
-        public void JsonSerializer_Deserialize_With_EnumerationClassAsObjectConverter_CamelCaseNamingPolicy()
+        public void JsonSerializer_Deserialize_CamelCaseNamingPolicy()
         {
             var json = """
                 {

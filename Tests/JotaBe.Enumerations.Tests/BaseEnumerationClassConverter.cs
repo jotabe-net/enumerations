@@ -209,14 +209,14 @@ namespace JotaBe.Enumerations.Tests
                     throw new JsonException($"Expected an string value, but is {reader.TokenType}");
                 }
                 var name = reader.GetString();
-                if (string.IsNullOrEmpty(name))
+                if (string.IsNullOrWhiteSpace(name))
                 {
-                    throw new JsonException("The unit property must have a value, but is null, empty or white space");
+                    throw new JsonException("The unit property must have a string, but is empty or white space");
                 }
 
                 if (!EnumerationClass<TEnumeration, TValue>.TryParse(name, out var element))
                 {
-                    throw new JsonException("Can't convert {name} to an enumeration class value");
+                    throw new JsonException($"Can't convert '{name}' to an enumeration class value");
                 }
 
                 return element;
@@ -239,12 +239,12 @@ namespace JotaBe.Enumerations.Tests
                 var name = reader.GetString();
                 if (string.IsNullOrEmpty(name))
                 {
-                    throw new JsonException("The unit property must have a value, but is null, empty or white space");
+                    throw new JsonException("The unit property must have a string, but is null, empty or white space");
                 }
 
                 if (!EnumerationClass<TEnumeration, TValue>.TryParse(name, out var element))
                 {
-                    throw new JsonException("Can't convert {name} to an enumeration class value");
+                    throw new JsonException($"Can't convert {name} to an enumeration class value");
                 }
 
                 return element;

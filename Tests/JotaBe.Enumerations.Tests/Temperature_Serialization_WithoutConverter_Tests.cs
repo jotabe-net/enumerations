@@ -9,7 +9,7 @@ namespace JotaBe.Enumerations.Tests
     public class Temperature_Serialization_WithoutConverter_Tests
     {
         [TestMethod]
-        public void JsonSerializer_Serialize_WithoutConverter_NoNamingPolicy()
+        public void JsonSerializer_Serialize_NoNamingPolicy()
         {
             var temperature = new Temperature(27.3, TemperatureUnit.Celsius);
 
@@ -29,7 +29,7 @@ namespace JotaBe.Enumerations.Tests
         }
 
         [TestMethod]
-        public void JsonSerializer_Serialize_WithoutConverter_CamelCaseNamingPolicy()
+        public void JsonSerializer_Serialize_CamelCaseNamingPolicy()
         {
             var temperature = new Temperature(27.3, TemperatureUnit.Celsius);
 
@@ -50,7 +50,7 @@ namespace JotaBe.Enumerations.Tests
 
 
         [TestMethod]
-        public void JsonSerializer_DeserializeWithoutConverter_Throws()
+        public void JsonSerializer_Deserialize_Throws()
         {
             var json = """
                 {
