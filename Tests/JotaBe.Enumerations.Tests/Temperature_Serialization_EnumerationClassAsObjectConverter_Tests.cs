@@ -1,24 +1,12 @@
 ﻿using FluentAssertions;
-using FluentAssertions.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text.Json;
 
 namespace JotaBe.Enumerations.Tests
 {
     [TestClass]
-    public class Temperature_Serialization_Tests
+    public class Temperature_Serialization_EnumerationClassAsObjectConverter_Tests
     {
-        [TestMethod]
-        public void JsonSerializer_Serialize_NoConverter()
-        {
-            var temperature = new Temperature(27.3, TemperatureUnit.Celsius);
-
-            var serializerOptions = new JsonSerializerOptions();
-            serializerOptions.WriteIndented = true;
-            var serialized = JsonSerializer.Serialize(temperature, serializerOptions);
-            Console.WriteLine(serialized);
-        }
-
         [TestMethod]
         public void JsonSerializer_Serialize_With_EnumerationClassAsObjectConverter_NoNamingPolicy()
         {
@@ -29,14 +17,16 @@ namespace JotaBe.Enumerations.Tests
             serializerOptions.Converters.Add(new EnumerationClassAsObjectConverter());
             var serialized = JsonSerializer.Serialize(temperature, serializerOptions);
             Console.WriteLine(serialized);
-            var serializedName = """
-                "Name": "Celsius"
+            var expected = """
+                {
+                  "Value": 27.3,
+                  "Unit": {
+                    "Name": "Celsius",
+                    "Value": "C"
+                  }
+                }
                 """;
-            var serializedValue = """
-                "Value": 27.3
-                """;
-            serialized.Should().Contain(serializedName, 1.TimesExactly());
-            serialized.Should().Contain(serializedValue, 1.TimesExactly());
+            serialized.Should().Be(expected);
         }
 
         [TestMethod]
@@ -50,19 +40,20 @@ namespace JotaBe.Enumerations.Tests
             serializerOptions.Converters.Add(new EnumerationClassAsObjectConverter());
             var serialized = JsonSerializer.Serialize(temperature, serializerOptions);
             Console.WriteLine(serialized);
-            var serializedName = """
-                "name": "Celsius"
+            var expected = """
+                {
+                  "value": 27.3,
+                  "unit": {
+                    "name": "Celsius",
+                    "value": "C"
+                  }
+                }
                 """;
-            var serializedValue = """
-                "value": 27.3
-                """;
-            serialized.Should().Contain(serializedName, 1.TimesExactly());
-            serialized.Should().Contain(serializedValue, 1.TimesExactly());
-
+            serialized.Should().Be(expected);
         }
 
         [TestMethod]
-        public void JsonSerializer_DeserializeWithoutConverter_Throws()
+        public void JsonSerializer_Deserialize_With_EnumerationClassAsObjectConverter_NoNamingPolicy()
         {
             var json = """
                 {
@@ -73,24 +64,6 @@ namespace JotaBe.Enumerations.Tests
                   }
                 }
                 """;
-
-            Action act = () => JsonSerializer.Deserialize<Temperature>(json);
-            act.Should().Throw<NotSupportedException>();
-        }
-
-
-        [TestMethod]
-        public void JsonSerializer_Deserialize_With_EnumerationClassAsObjectConverter_NoNamingPolicy()
-        {
-            var json = """
- {
-  "Value": 27.3,
-  "Unit": {
-    "Name": "Celsius",
-    "Value": "C"
-  }
-}
-""";
 
             var serializerOptions = new JsonSerializerOptions();
             serializerOptions.WriteIndented = true;
@@ -105,14 +78,14 @@ namespace JotaBe.Enumerations.Tests
         public void JsonSerializer_Deserialize_With_EnumerationClassAsObjectConverter_CamelCaseNamingPolicy()
         {
             var json = """
- {
-  "value": 27.3,
-  "unit": {
-    "name": "Celsius",
-    "value": "C"
-  }
-}
-""";
+                {
+                  "value": 27.3,
+                  "unit": {
+                    "name": "Celsius",
+                    "value": "C"
+                  }
+                }
+                """;
 
             var serializerOptions = new JsonSerializerOptions();
             serializerOptions.WriteIndented = true;
@@ -123,8 +96,6 @@ namespace JotaBe.Enumerations.Tests
             var expected = new Temperature(27.3, TemperatureUnit.Celsius);
             deserialized.Should().BeEquivalentTo(expected);
         }
-
-
 
     }
 }

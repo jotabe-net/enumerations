@@ -21,7 +21,7 @@ namespace JotaBe.Enumerations.Tests
         protected enum SerializationMode
         {
             Value,
-            Key,
+            Name,
             AsObject,
             RespectEnumMemberStringConverter
         }
@@ -95,7 +95,7 @@ namespace JotaBe.Enumerations.Tests
                     case SerializationMode.AsObject:
                         return ReadFullObject(ref reader, typeToConvert, options);
                     case SerializationMode.Value:
-                    case SerializationMode.Key:
+                    case SerializationMode.Name:
                     case SerializationMode.RespectEnumMemberStringConverter:
                         throw new NotImplementedException();
                     default:
