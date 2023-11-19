@@ -1,10 +1,13 @@
 ﻿using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Xml.Linq;
 using JotaBe.TypeExtensions;
 
 namespace JotaBe.Enumerations.Tests
 {
+    // TODO: test cases with attribute converter attribute ion property
+
     /// <summary>
     /// This converter controls how the <see cref="EnumerationClass{,}"/> is
     /// serialized (as whole object, name or value).<br/>
@@ -195,7 +198,7 @@ namespace JotaBe.Enumerations.Tests
             }
 
             /// <summary>
-            /// This is used when the unit was serialized by its name property
+            /// This is used when the <see cref="EnumerationClass{,}" was serialized by its name property
             /// </summary>
             /// <param name="reader"></param>
             /// <param name="typeToConvert"></param>
@@ -211,19 +214,19 @@ namespace JotaBe.Enumerations.Tests
                 var name = reader.GetString();
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    throw new JsonException("The unit property must have a string, but is empty or white space");
+                    throw new JsonException("The property must have a string, but is empty or white space");
                 }
 
                 if (!EnumerationClass<TEnumeration, TValue>.TryParse(name, out var element))
                 {
-                    throw new JsonException($"Can't convert '{name}' to an enumeration class value");
+                    throw new JsonException($"Can't convert '{name}' to a value of {typeToConvert}");
                 }
 
                 return element;
             }
 
             /// <summary>
-            /// This is used when the unit was serialized by its Value property
+            /// This is used when the <see cref="EnumerationClass{,}"/> was serialized by its Value property
             /// </summary>
             /// <param name="reader"></param>
             /// <param name="typeToConvert"></param>
@@ -232,21 +235,27 @@ namespace JotaBe.Enumerations.Tests
             /// <exception cref="JsonException"></exception>
             protected EnumerationClass<TEnumeration, TValue>? ReadFromValue(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
-                if (reader.TokenType != JsonTokenType.String)
+                TValue? value = default(TValue);
+                try
                 {
-                    throw new JsonException($"Expected an string value, but is {reader.TokenType}");
+                    value = (TValue?)JsonSerializer.Deserialize(ref reader, typeof(TValue), options);
                 }
-                var name = reader.GetString();
-                if (string.IsNullOrEmpty(name))
+                catch (Exception)
                 {
-                    throw new JsonException("The unit property must have a string, but is null, empty or white space");
-                }
-
-                if (!EnumerationClass<TEnumeration, TValue>.TryParse(name, out var element))
-                {
-                    throw new JsonException($"Can't convert {name} to an enumeration class value");
+                    throw new JsonException($"Cant' convert property");
                 }
 
+                if (value == null)
+                {
+                    throw new JsonException($"The property must have a value of type {typeof(TValue).Name} but is null");
+                }
+
+                if (!EnumerationClass<TEnumeration, TValue>.IsDefined(value))
+                {
+                    throw new JsonException($"Can't convert '{value}' to an enumeration class value");
+                }
+
+                var element = EnumerationClass<TEnumeration, TValue>.FromValue(value);
                 return element;
             }
 
@@ -259,6 +268,8 @@ namespace JotaBe.Enumerations.Tests
                         WriteAsObject(writer, value, options);
                         break;
                     case SerializationMode.Value:
+                        WriteValue(writer, value, options);
+                        break;
                     case SerializationMode.Name:
                         WriteName(writer, value, options);
                         break;
@@ -284,6 +295,12 @@ namespace JotaBe.Enumerations.Tests
                 writer.WritePropertyName(propertyName);
                 JsonSerializer.Serialize(writer, value.Value, options);
                 writer.WriteEndObject();
+            }
+
+            protected void WriteValue(Utf8JsonWriter writer, EnumerationClass<TEnumeration, TValue> value, JsonSerializerOptions options)
+            {
+                // Use default serializer of TValue
+                JsonSerializer.Serialize(writer, value.Value, typeof(TValue), options);
             }
 
             protected void WriteName(Utf8JsonWriter writer, EnumerationClass<TEnumeration, TValue> value, JsonSerializerOptions options)
