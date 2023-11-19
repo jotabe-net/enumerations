@@ -20,13 +20,13 @@ namespace JotaBe.Enumerations.Tests
         }
 
         [TestMethod]
-        public void JsonSerializer_SerializeWithConverter_NoNamingPolicy()
+        public void JsonSerializer_Serialize_With_EnumerationClassAsObjectConverter_NoNamingPolicy()
         {
             var temperature = new Temperature(27.3, TemperatureUnit.Celsius);
 
             var serializerOptions = new JsonSerializerOptions();
             serializerOptions.WriteIndented = true;
-            serializerOptions.Converters.Add(new EnumerationClassConverter());
+            serializerOptions.Converters.Add(new EnumerationClassAsObjectConverter());
             var serialized = JsonSerializer.Serialize(temperature, serializerOptions);
             Console.WriteLine(serialized);
             var serializedName = """
@@ -40,14 +40,14 @@ namespace JotaBe.Enumerations.Tests
         }
 
         [TestMethod]
-        public void JsonSerializer_SerializeWithConverter_CamelCaseNamingPolicy()
+        public void JsonSerializer_Serialize_With_EnumerationClassAsObjectConverter_CamelCaseNamingPolicy()
         {
             var temperature = new Temperature(27.3, TemperatureUnit.Celsius);
 
             var serializerOptions = new JsonSerializerOptions();
             serializerOptions.WriteIndented = true;
             serializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-            serializerOptions.Converters.Add(new EnumerationClassConverter());
+            serializerOptions.Converters.Add(new EnumerationClassAsObjectConverter());
             var serialized = JsonSerializer.Serialize(temperature, serializerOptions);
             Console.WriteLine(serialized);
             var serializedName = """
@@ -61,9 +61,26 @@ namespace JotaBe.Enumerations.Tests
 
         }
 
+        [TestMethod]
+        public void JsonSerializer_DeserializeWithoutConverter_Throws()
+        {
+            var json = """
+                {
+                  "Value": 27.3,
+                  "Unit": {
+                    "Name": "Celsius",
+                    "Value": "C"
+                  }
+                }
+                """;
+
+            Action act = () => JsonSerializer.Deserialize<Temperature>(json);
+            act.Should().Throw<NotSupportedException>();
+        }
+
 
         [TestMethod]
-        public void JsonSerializer_DeserializeWithConverter_NoNamingPolicy()
+        public void JsonSerializer_Deserialize_With_EnumerationClassAsObjectConverter_NoNamingPolicy()
         {
             var json = """
  {
@@ -77,8 +94,7 @@ namespace JotaBe.Enumerations.Tests
 
             var serializerOptions = new JsonSerializerOptions();
             serializerOptions.WriteIndented = true;
-            //serializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-            serializerOptions.Converters.Add(new EnumerationClassConverter());
+            serializerOptions.Converters.Add(new EnumerationClassAsObjectConverter());
             var deserialized = JsonSerializer.Deserialize<Temperature>(json, serializerOptions);
 
             var expected = new Temperature(27.3, TemperatureUnit.Celsius);
@@ -86,7 +102,7 @@ namespace JotaBe.Enumerations.Tests
         }
 
         [TestMethod]
-        public void JsonSerializer_DeserializeWithConverter_CamelCaseNamingPolicy()
+        public void JsonSerializer_Deserialize_With_EnumerationClassAsObjectConverter_CamelCaseNamingPolicy()
         {
             var json = """
  {
@@ -101,7 +117,7 @@ namespace JotaBe.Enumerations.Tests
             var serializerOptions = new JsonSerializerOptions();
             serializerOptions.WriteIndented = true;
             serializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-            serializerOptions.Converters.Add(new EnumerationClassConverter());
+            serializerOptions.Converters.Add(new EnumerationClassAsObjectConverter());
             var deserialized = JsonSerializer.Deserialize<Temperature>(json, serializerOptions);
 
             var expected = new Temperature(27.3, TemperatureUnit.Celsius);

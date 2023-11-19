@@ -4,7 +4,7 @@ namespace JotaBe.TypeExtensions
 {
     public static class TypeExtensions
     {
-        // TODO: this could cache the info to avoid repeating on each call
+        // TODO: IMP this could cache the info to avoid repeating on each call
 
         /// <summary>
         /// Checks if the type is derived from the <paramref name="baseType"/>

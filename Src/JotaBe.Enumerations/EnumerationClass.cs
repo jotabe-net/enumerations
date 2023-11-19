@@ -76,7 +76,12 @@ namespace JotaBe.Enumerations
             return element;
         }
 
-        // TODO: allow ignore case??
+        /// <summary>
+        /// Get the value with the specified name. Alternatively, can use any of the <code>ParseXxx</code>
+        /// methods.
+        /// </summary>
+        /// <param name="name">Name of the enumeration value</param>
+        /// <returns></returns>
         public static TEnumeration FromName(string name)
         {
             var element = Elements.First(e => e.Name == name);
