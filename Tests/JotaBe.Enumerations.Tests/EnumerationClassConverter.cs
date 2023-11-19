@@ -75,10 +75,12 @@ namespace JotaBe.Enumerations.Tests
 
                 _valueConverter = (JsonConverter<TValue>)options.GetConverter(typeof(TValue));
                 _valueType = typeof(TValue);
+                _serializationOptions = options;
             }
 
-            JsonConverter<TValue> _valueConverter;
-            Type _valueType;
+            private readonly JsonConverter<TValue> _valueConverter;
+            private readonly Type _valueType;
+            private readonly JsonSerializerOptions _serializationOptions;
 
             const string NamePropertyName = nameof(EnumerationClass<TEnumeration, TValue>.Name);
             const string ValuePropertyName = nameof(EnumerationClass<TEnumeration, TValue>.Value);
@@ -151,17 +153,21 @@ namespace JotaBe.Enumerations.Tests
             }
 
             /// <summary>
-            /// Currently .NET doesn't support property policies to deserialize, and properties
-            /// could be camel-cased. So it's necessary to check the property name in case
-            /// sensitive and case insensitive way. First case sensitive for performance reasons.
+            /// True if the property name read from the JSON matches the deserialized property
+            /// name, after casing it with the naming policy, if existing.
             /// </summary>
-            /// <param name="jsonPropertyName"></param>
-            /// <param name="propertyName"></param>
+            /// <param name="jsonPropertyName">Property name as read from the serialized JSON</param>
+            /// <param name="deserializedPropertyName">Original property name</param>
             /// <returns></returns>
-            private bool IsProperty(string jsonPropertyName, string propertyName)
+            private bool IsProperty(string jsonPropertyName, string deserializedPropertyName)
             {
-                return propertyName.Equals(jsonPropertyName, StringComparison.Ordinal)
-                    || propertyName.Equals(jsonPropertyName, StringComparison.OrdinalIgnoreCase);
+                // TODO: should explain that this is the way to go in the examples of converters, not using a IgnoreCase !!
+                if (_serializationOptions.PropertyNamingPolicy == null)
+                {
+                    return deserializedPropertyName.Equals(jsonPropertyName, StringComparison.Ordinal);
+                }
+                var casedPropertyName = _serializationOptions.PropertyNamingPolicy.ConvertName(deserializedPropertyName);
+                return casedPropertyName.Equals(jsonPropertyName, StringComparison.Ordinal);
             }
 
             public override void Write(Utf8JsonWriter writer, EnumerationClass<TEnumeration, TValue> value, JsonSerializerOptions options)
