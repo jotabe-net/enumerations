@@ -11,11 +11,24 @@ namespace JotaBe.Enumerations.Tests
     /// </summary>
     public class EnumerationClassConverter : JsonConverterFactory
     {
-        // TODO: the factory should not have parameters beacuse can't be used in jsonserializer attribute
-        // TODO: so it's possible to create a base class, and derive whole objec + value + name, by default value??
+        // TODO: the factory should not have parameters because can't be used in json serializer attribute
+        // TODO: so it's possible to create a base class, and derive whole object + value + name, by default value??
 
         // As it's used for generic classes, must use the factory pattern explained here
         // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/converters-how-to?pivots=dotnet-7-0
+        // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/deserialization?pivots=dotnet-8-0
+
+        // on naming policies:
+        // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/customize-properties?pivots=dotnet-8-0#use-a-built-in-naming-policy
+
+        // use in immutable types
+        // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/immutability
+
+        // accept case insensitive deserialization
+        // TODO: check if specified and use in my case converter? currently is doing it always, and should not!!
+        // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/character-casing
+        // In josn net they are contract resolvers:
+        // https://stackoverflow.com/questions/68718843/deserialize-json-with-dashes-kebab-case-in-property-names-in-c-sharp-using-new
 
         public override bool CanConvert(Type typeToConvert)
         {
