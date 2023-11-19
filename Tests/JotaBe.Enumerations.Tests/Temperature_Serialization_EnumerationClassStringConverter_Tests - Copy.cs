@@ -98,7 +98,6 @@ namespace JotaBe.Enumerations.Tests
             act.Should().Throw<JsonException>();
         }
 
-        // TODO: ideally, this should throw !! a null unit is not allowed
         [TestMethod]
         public void JsonSerializer_Deserialize_NoNamingPolicy_Null()
         {
@@ -111,9 +110,8 @@ namespace JotaBe.Enumerations.Tests
 
             var serializerOptions = new JsonSerializerOptions();
             serializerOptions.Converters.Add(new EnumerationClassValueConverter());
-            var deserialized = JsonSerializer.Deserialize<Temperature>(json, serializerOptions);
-            var expected = new Temperature(27.3, null);
-            deserialized.Should().BeEquivalentTo(expected);
+            var act = () => JsonSerializer.Deserialize<Temperature>(json, serializerOptions);
+            act.Should().Throw<JsonException>().WithMessage("The property must have a value, but is null");
         }
 
         [TestMethod]

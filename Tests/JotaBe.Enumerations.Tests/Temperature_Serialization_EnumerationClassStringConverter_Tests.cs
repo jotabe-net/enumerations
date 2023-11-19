@@ -111,7 +111,7 @@ namespace JotaBe.Enumerations.Tests
             var serializerOptions = new JsonSerializerOptions();
             serializerOptions.Converters.Add(new EnumerationClassStringConverter());
             var act = () => JsonSerializer.Deserialize<Temperature>(json, serializerOptions);
-            act.Should().Throw<JsonException>().WithMessage("The property must have a string, but is empty or white space");
+            act.Should().Throw<JsonException>().WithMessage("The property must be a non-empty string, but is empty or white space");
         }
 
         [TestMethod]
@@ -127,10 +127,9 @@ namespace JotaBe.Enumerations.Tests
             var serializerOptions = new JsonSerializerOptions();
             serializerOptions.Converters.Add(new EnumerationClassStringConverter());
             var act = () => JsonSerializer.Deserialize<Temperature>(json, serializerOptions);
-            act.Should().Throw<JsonException>().WithMessage("The property must have a string, but is empty or white space");
+            act.Should().Throw<JsonException>().WithMessage("The property must be a non-empty string, but is empty or white space");
         }
 
-        // TODO: ideally, this should throw !! a null unit is not allowed
         [TestMethod]
         public void JsonSerializer_Deserialize_NoNamingPolicy_Null()
         {
@@ -143,9 +142,8 @@ namespace JotaBe.Enumerations.Tests
 
             var serializerOptions = new JsonSerializerOptions();
             serializerOptions.Converters.Add(new EnumerationClassStringConverter());
-            var deserialized = JsonSerializer.Deserialize<Temperature>(json, serializerOptions);
-            var expected = new Temperature(27.3, null);
-            deserialized.Should().BeEquivalentTo(expected);
+            var act =  () => JsonSerializer.Deserialize<Temperature>(json, serializerOptions);
+            act.Should().Throw<JsonException>().WithMessage("The property must have a string, but is null");
         }
 
         [TestMethod]
