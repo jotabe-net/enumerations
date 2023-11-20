@@ -6,12 +6,16 @@ using System.Reflection;
 
 namespace JotaBe.Enumerations
 {
-    // TODO: if order may be of importance, either make the value IComparable, or allow an int for defining the order
-    // TODO: document all 
-
     /// <summary>
-    /// Can be used as a replacement for C# enum, to allow including
+    /// Can be used as a replacement for C# enum, to allow including related logic and extra
+    /// properties for each value.<br/>
+    /// Must implement a non-public constructor.<br/>
+    /// The elements must be defined as
+    /// <code>public statc readonly EnumClassType Value1 = new EnumClassType</code>
     /// </summary>
+    /// <typeparam name="TEnumeration">The type of the implemented class itself, which
+    /// is inheriting the <see cref="EnumerationClass{,}"/></typeparam>
+    /// <typeparam name="TValue">The type of the value for each element</typeparam>
     [DebuggerDisplay("{DebuggerDisplay}")]
     public abstract class EnumerationClass<TEnumeration,TValue>
         where TEnumeration : EnumerationClass<TEnumeration,TValue>

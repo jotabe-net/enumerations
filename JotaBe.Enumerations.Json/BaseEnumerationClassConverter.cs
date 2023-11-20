@@ -6,8 +6,6 @@ using JotaBe.TypeExtensions;
 
 namespace JotaBe.Enumerations.Json
 {
-    // TODO: test cases with attribute converter attribute ion property
-
     /// <summary>
     /// This converter controls how the <see cref="EnumerationClass{,}"/> is
     /// serialized (as whole object, name or value).<br/>
@@ -80,6 +78,8 @@ namespace JotaBe.Enumerations.Json
             const string NamePropertyName = nameof(EnumerationClass<TEnumeration, TValue>.Name);
             const string ValuePropertyName = nameof(EnumerationClass<TEnumeration, TValue>.Value);
 
+            public override bool HandleNull => true;
+
             public override EnumerationClass<TEnumeration, TValue>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
                 switch (_serializationMode)
@@ -91,7 +91,6 @@ namespace JotaBe.Enumerations.Json
                     case SerializationMode.Name:
                         return ReadFromName(ref reader, typeToConvert, options);
                     case SerializationMode.RespectEnumMemberStringConverter:
-                        // TODO: respect enum member string converter
                         throw new NotImplementedException(); 
                     default:
                         throw new NotImplementedException($"Serialization mode {_serializationMode} not supported");
@@ -144,14 +143,13 @@ namespace JotaBe.Enumerations.Json
                             throw new JsonException($"The value for property {NamePropertyName} should be a string but is {reader.TokenType}");
                         }
                         nameFound = true;
-                        name = reader.GetString()!; // TODO: verify is not null or empty
+                        name = reader.GetString()!;
                     }
                     else if (IsProperty(propertyName, ValuePropertyName))
                     {
                         reader.Read();
                         valueFound = true;
                         value = _valueConverter.Read(ref reader, _valueType, options);
-                        // TODO: verify is not null
                     }
                     else
                     {
@@ -188,7 +186,6 @@ namespace JotaBe.Enumerations.Json
             /// <returns></returns>
             private bool IsProperty(string jsonPropertyName, string deserializedPropertyName)
             {
-                // TODO: should explain that this is the way to go in the examples of converters, not using a IgnoreCase !!
                 if (_serializationOptions.PropertyNamingPolicy == null)
                 {
                     return deserializedPropertyName.Equals(jsonPropertyName, StringComparison.Ordinal);
@@ -207,16 +204,20 @@ namespace JotaBe.Enumerations.Json
             /// <exception cref="JsonException"></exception>
             protected EnumerationClass<TEnumeration, TValue>? ReadFromName(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
+                if (reader.TokenType == JsonTokenType.Null)
+                {
+                    throw new JsonException("The property must have a string, but is null");
+                }
                 if (reader.TokenType != JsonTokenType.String)
                 {
                     throw new JsonException($"Expected an string value, but is {reader.TokenType}");
                 }
+
                 var name = reader.GetString();
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    throw new JsonException("The property must have a string, but is empty or white space");
+                    throw new JsonException("The property must be a non-empty string, but is empty or white space");
                 }
-
                 if (!EnumerationClass<TEnumeration, TValue>.TryParse(name, out var element))
                 {
                     throw new JsonException($"Can't convert '{name}' to a value of {typeToConvert}");
@@ -235,7 +236,11 @@ namespace JotaBe.Enumerations.Json
             /// <exception cref="JsonException"></exception>
             protected EnumerationClass<TEnumeration, TValue>? ReadFromValue(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
-                TValue value = default(TValue);
+                if (reader.TokenType == JsonTokenType.Null)
+                {
+                    throw new JsonException("The property must have a value, but is null");
+                }
+                TValue value;
                 try
                 {
                     value = (TValue)JsonSerializer.Deserialize(ref reader, typeof(TValue), options);

@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JotaBe.TypeExtensions", "Jo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JotaBe.TypeExtensions.Tests", "JotaBe.TypeExtensions.Tests\JotaBe.TypeExtensions.Tests.csproj", "{72A8A78B-B5DD-4B5C-A2CC-67868EB33D29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JotaBe.Enumerations.Json", "JotaBe.Enumerations.Json\JotaBe.Enumerations.Json.csproj", "{DF97005F-1D6C-43E7-BBED-5B1B4D4FB62B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JotaBe.Enumerations.Json", "JotaBe.Enumerations.Json\JotaBe.Enumerations.Json.csproj", "{DF97005F-1D6C-43E7-BBED-5B1B4D4FB62B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonSourceGenerationConsole", "JsonSourceGenerationConsole\JsonSourceGenerationConsole.csproj", "{982A868D-C44A-4962-9992-9A7BA5DB77DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +48,10 @@ Global
 		{DF97005F-1D6C-43E7-BBED-5B1B4D4FB62B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF97005F-1D6C-43E7-BBED-5B1B4D4FB62B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF97005F-1D6C-43E7-BBED-5B1B4D4FB62B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{982A868D-C44A-4962-9992-9A7BA5DB77DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{982A868D-C44A-4962-9992-9A7BA5DB77DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{982A868D-C44A-4962-9992-9A7BA5DB77DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{982A868D-C44A-4962-9992-9A7BA5DB77DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

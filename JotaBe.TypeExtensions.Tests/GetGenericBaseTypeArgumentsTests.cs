@@ -47,9 +47,6 @@ namespace JotaBe.TypeExtensions.Tests
             types.Should().BeNull();
         }
 
-
-        // TODO: base no generic, specified base with params
-
     }
 
 }
